@@ -10,6 +10,7 @@ import {
   PlusCircle,
   BookOpen,
   MessageSquare,
+  Trophy,
 } from "lucide-react";
 import {
   LineChart,
@@ -25,11 +26,41 @@ import { PeriodFilterModal } from "../components/Filter/PeriodFilterModal";
 import { CreateGroupModal } from "../components/Filter/CreateGroupModal";
 
 const topPerformers = [
-  { name: "Sarah Chen", points: 2847, position: 1 },
-  { name: "Mike Johnson", points: 2534, position: 2 },
-  { name: "Emma Wilson", points: 2291, position: 3 },
-  { name: "David Brown", points: 2156, position: 4 },
-  { name: "Lisa Garcia", points: 1987, position: 5 },
+  {
+    name: "Sarah Chen",
+    email: "sarah@gmail.com",
+    points: 100,
+    referral: "SMKMITRA",
+    position: 1,
+  },
+  {
+    name: "Mike Johnson",
+    email: "mike@gmail.com",
+    points: 95,
+    referral: "SMK1BEKASI",
+    position: 2,
+  },
+  {
+    name: "Emma Wilson",
+    email: "emma@gmail.com",
+    points: 90,
+    referral: "SMK2BEKASI",
+    position: 3,
+  },
+  {
+    name: "David Brown",
+    email: "david@gmail.com",
+    points: 80,
+    referral: "SMKTARUNA",
+    position: 4,
+  },
+  {
+    name: "Lisa Garcia",
+    email: "lisa@gmail.com",
+    points: 75,
+    referral: "SMKMITRA",
+    position: 5,
+  },
 ];
 
 const progressData = [
@@ -436,26 +467,38 @@ const Dashboard = () => {
             Top Performers
           </h2>
           <ul className="space-y-3">
-            {topPerformers.map((user, index) => (
+            {topPerformers.map((user) => (
               <li
-                key={user.name}
-                className={`flex items-center justify-between p-3 rounded-md ${
-                  index === 0
-                    ? "bg-yellow-50 border border-yellow-300 dark:bg-yellow-900/20 dark:border-yellow-700"
-                    : "bg-gray-50 dark:bg-gray-700/50"
-                }`}
+                key={user.email}
+                className="flex items-center justify-between p-4 rounded-md bg-yellow-50 border border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-700"
               >
-                <div className="flex items-center gap-3">
-                  <span className="text-lg font-bold text-gray-700 dark:text-gray-200">
+                {/* Kiri: No + Nama + Email */}
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-yellow-400 text-white font-bold">
                     {user.position}
-                  </span>
-                  <span className="text-gray-800 dark:text-gray-100">
-                    {user.name}
-                  </span>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">
+                      {user.name}
+                    </p>
+                    <p className="text-xs text-gray-600 dark:text-gray-300">
+                      {user.email}
+                    </p>
+                  </div>
                 </div>
-                <span className="font-medium text-gray-600 dark:text-gray-300">
-                  {user.points.toLocaleString()} pts
-                </span>
+
+                {/* Kanan: Persen + Referral + Trophy */}
+                <div className="flex items-center gap-3">
+                  <div className="text-right">
+                    <p className="text-sm font-semibold text-gray-800 dark:text-white">
+                      {user.points}%
+                    </p>
+                    <p className="text-xs text-gray-800 dark:text-white">
+                      {user.referral}
+                    </p>
+                  </div>
+                  <Trophy className="w-5 h-5 text-yellow-500" />
+                </div>
               </li>
             ))}
           </ul>
