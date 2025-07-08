@@ -8,7 +8,7 @@ interface IconMenuProps {
 
 const IconMenu: FC<IconMenuProps> = ({
   className,
-  fill = false,
+  // fill = false,
   duotone = true,
 }) => {
   return (

@@ -8,7 +8,7 @@ interface IconSunProps {
 
 const IconSun: FC<IconSunProps> = ({
   className,
-  fill = false,
+  // fill = false,
   duotone = true,
 }) => {
   return (

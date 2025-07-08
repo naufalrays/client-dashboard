@@ -139,7 +139,7 @@ const themeConfigSlice = createSlice({
       state.sidebar = !state.sidebar;
     },
 
-    setPageTitle(state, { payload }) {
+    setPageTitle(_state, { payload }) {
       document.title = `${payload} | VRISTO - Multipurpose Tailwind Dashboard Template`;
     },
   },

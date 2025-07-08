@@ -43,7 +43,7 @@ const Header = () => {
   const themeConfig = useSelector((state: IRootState) => state.themeConfig);
   const dispatch = useDispatch();
 
-  const [search, setSearch] = useState(false);
+  // const [search, setSearch] = useState(false);
 
   return (
     <header

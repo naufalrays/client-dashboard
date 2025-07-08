@@ -3,15 +3,14 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useLocation } from "react-router-dom";
 import { toggleSidebar } from "../../store/themeConfigSlice";
-import AnimateHeight from "react-animate-height";
+// import AnimateHeight from "react-animate-height";
 import type { IRootState } from "../../store";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import IconCaretsDown from "../Icon/IconCaretsDown";
-import IconCaretDown from "../Icon/IconCaretDown";
 import { House, Users, ChartColumn } from "lucide-react"; // Import ikon dari Lucide React
 
 const Sidebar = () => {
-  const [currentMenu, setCurrentMenu] = useState<string>("");
+  // const [currentMenu, setCurrentMenu] = useState<string>("");
   const themeConfig = useSelector((state: IRootState) => state.themeConfig);
   const semidark = useSelector(
     (state: IRootState) => state.themeConfig.semidark
@@ -20,11 +19,11 @@ const Sidebar = () => {
   const dispatch = useDispatch();
   // const { t } = useTranslation(); // Baris ini dihapus
 
-  const toggleMenu = (value: string) => {
-    setCurrentMenu((oldValue) => {
-      return oldValue === value ? "" : value;
-    });
-  };
+  // const toggleMenu = (value: string) => {
+  //   setCurrentMenu((oldValue) => {
+  //     return oldValue === value ? "" : value;
+  //   });
+  // };
 
   useEffect(() => {
     const selector = document.querySelector(

@@ -8,8 +8,8 @@ interface IconMoonProps {
 
 const IconMoon: FC<IconMoonProps> = ({
   className,
-  fill = false,
-  duotone = true,
+  // fill = false,
+  // duotone = true,
 }) => {
   return (
     <svg
