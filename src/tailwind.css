@@ -1,6 +1,9 @@
 /* Animate css */
 @import "./assets/css/animate.css";
 
+/* flatpickr css */
+@import "./assets/css/flatpickr.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

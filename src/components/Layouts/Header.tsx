@@ -66,10 +66,10 @@ const Header = () => {
             </button>
             <div className="hidden sm:block">
               <h1 className="text-xl font-bold dark:text-white-light">
-                Dashboard Overview
+                Client Dashboard
               </h1>
               <p className="text-sm text-gray-500 dark:text-gray-400">
-                Welcome back!
+                Hi John!
               </p>
             </div>
           </div>
