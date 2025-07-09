@@ -54,8 +54,8 @@ const topLogUsers = [
     count: 342,
   },
   {
-    name: "Samuel Johnson",
-    email: "samuel.johnson@email.com",
+    name: "Eko Prasetyo",
+    email: "eko.prasetyo@email.com",
     count: 298,
   },
   {

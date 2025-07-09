@@ -150,7 +150,7 @@ const Header = () => {
                           type="button"
                           className="text-black/60 hover:text-primary dark:text-dark-light/60 dark:hover:text-white"
                         >
-                          johndoe@gmail.com
+                          johndoe@email.com
                         </button>
                       </div>
                     </div>
