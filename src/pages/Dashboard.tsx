@@ -3,7 +3,6 @@ import "flatpickr/dist/flatpickr.css";
 
 import {
   UserCheck,
-  ChartLine,
   Clock3,
   MessagesSquare,
   CheckCircle,
@@ -11,6 +10,7 @@ import {
   BookOpen,
   MessageSquare,
   Trophy,
+  Users,
 } from "lucide-react";
 import {
   LineChart,
@@ -27,38 +27,38 @@ import { CreateGroupModal } from "../components/Filter/CreateGroupModal";
 
 const topPerformers = [
   {
-    name: "Sarah Chen",
+    name: "Sarah",
     email: "sarah@gmail.com",
     points: 100,
-    referral: "SMKMITRA",
+    referral: "SMKN",
     position: 1,
   },
   {
-    name: "Mike Johnson",
-    email: "mike@gmail.com",
+    name: "Agus Salim",
+    email: "agus.salimgmail.com",
     points: 95,
-    referral: "SMK1BEKASI",
+    referral: "SMKN",
     position: 2,
   },
   {
-    name: "Emma Wilson",
-    email: "emma@gmail.com",
+    name: "Amanda Putri",
+    email: "amandaputri@gmail.com",
     points: 90,
-    referral: "SMK2BEKASI",
+    referral: "SMKN",
     position: 3,
   },
   {
-    name: "David Brown",
-    email: "david@gmail.com",
+    name: "Asep David",
+    email: "asep.david@gmail.com",
     points: 80,
-    referral: "SMKTARUNA",
+    referral: "SMKN",
     position: 4,
   },
   {
-    name: "Lisa Garcia",
+    name: "Lisa",
     email: "lisa@gmail.com",
     points: 75,
-    referral: "SMKMITRA",
+    referral: "SMKN",
     position: 5,
   },
 ];
@@ -99,16 +99,16 @@ const activities = [
 
 const schoolGroups = [
   { id: "all", name: "Select All" },
-  { id: "smk1", name: "SMK 1" },
-  { id: "smk2", name: "SMK 2" },
-  { id: "smk3", name: "SMK 3" },
-  { id: "smk4", name: "SMK 4" },
-  { id: "smk5", name: "SMK 5" },
-  { id: "smk6", name: "SMK 6" },
-  { id: "smk7", name: "SMK 7" },
-  { id: "smk8", name: "SMK 8" },
-  { id: "smk9", name: "SMK 9" },
-  { id: "smk10", name: "SMK 10" },
+  { id: "smk1", name: "SMKN" },
+  { id: "smk2", name: "SMKN" },
+  { id: "smk3", name: "SMKN" },
+  { id: "smk4", name: "SMKN" },
+  { id: "smk5", name: "SMKN" },
+  { id: "smk6", name: "SMKN" },
+  { id: "smk7", name: "SMKN" },
+  { id: "smk8", name: "SMKN" },
+  { id: "smk9", name: "SMKN" },
+  { id: "smk10", name: "SMKN" },
 ];
 
 // Sample users data
@@ -401,10 +401,10 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="flex items-center mt-1">
-            <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3"> 12,345 </div>
+            <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3">12,345</div>
           </div>
           <div className="flex items-center font-semibold mt-1">
-            Last Month 11,900
+            Learners active this month
           </div>
         </div>
 
@@ -412,16 +412,16 @@ const Dashboard = () => {
           <div className="flex justify-between items-start">
             <div className="flex flex-col items-start">
               <div className="p-3 bg-green-100 dark:bg-green-900 rounded-lg border border-green-200 dark:border-green-800 mb-2">
-                <ChartLine className="w-6 h-6 text-green-500" />
+                <Users className="w-6 h-6 text-green-500" />
               </div>
-              <div className="text-md font-semibold">Average Progress</div>
+              <div className="text-md font-semibold">Total Users</div>
             </div>
           </div>
           <div className="flex items-center mt-1">
-            <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3"> 78.5% </div>
+            <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3">1,856</div>
           </div>
           <div className="flex items-center font-semibold mt-1">
-            Course completion rate
+            Registered accounts
           </div>
         </div>
 
@@ -431,11 +431,11 @@ const Dashboard = () => {
               <div className="p-3 bg-purple-100 dark:bg-purple-900 rounded-lg border border-purple-200 dark:border-purple-800 mb-2">
                 <Clock3 className="w-6 h-6 text-purple-500" />
               </div>
-              <div className="text-md font-semibold">Total Learning Hours</div>
+              <div className="text-md font-semibold">Active Hours</div>
             </div>
           </div>
           <div className="flex items-center mt-1">
-            <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3"> 5,678 </div>
+            <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3">7am - 9am</div>
           </div>
           <div className="flex items-center font-semibold mt-1">
             Hours logged this month
@@ -452,7 +452,7 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="flex items-center mt-1">
-            <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3"> 9,876 </div>
+            <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3"> 8,934 </div>
           </div>
           <div className="flex items-center font-semibold mt-1">
             Total Interactions

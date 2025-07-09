@@ -49,18 +49,18 @@ const engagementSummary = [
 // Data untuk Top Log Users dan Top Lesson Users (tetap sama)
 const topLogUsers = [
   {
-    name: "Sarah Johnson",
+    name: "Sarah",
     email: "sarahj@email.com",
     count: 342,
   },
   {
-    name: "Mike Chen",
-    email: "mikec@email.com",
+    name: "Samuel Johnson",
+    email: "samuel.johnson@email.com",
     count: 298,
   },
   {
-    name: "Emma Davis",
-    email: "emmad@email.com",
+    name: "Tania Putri",
+    email: "tania.putri@email.com",
     count: 276,
   },
 ];
@@ -68,20 +68,20 @@ const topLogUsers = [
 const topLessonUsers = [
   {
     avatar: "https://i.pravatar.cc/300",
-    name: "Alex Rodriguez",
-    email: "alexr@email.com",
+    name: "Asep Rahmat",
+    email: "asep.rahmat@email.com",
     count: 89,
   },
   {
     avatar: "https://i.pravatar.cc/300",
-    name: "Lisa Wang",
-    email: "lisaw@email.com",
+    name: "Budi Wibowo",
+    email: "budi.wibowo@email.com",
     count: 76,
   },
   {
     avatar: "https://i.pravatar.cc/300",
-    name: "David Kim",
-    email: "davidk@email.com",
+    name: "Putri Sari",
+    email: "putri.sari@email.com",
     count: 72,
   },
 ];
@@ -221,24 +221,24 @@ const sampleUsers = [
 
 const schoolGroups = [
   { id: "all", name: "Select All" },
-  { id: "smk1", name: "SMK 1" },
-  { id: "smk2", name: "SMK 2" },
-  { id: "smk3", name: "SMK 3" },
-  { id: "smk4", name: "SMK 4" },
-  { id: "smk5", name: "SMK 5" },
-  { id: "smk6", name: "SMK 6" },
-  { id: "smk7", name: "SMK 7" },
-  { id: "smk8", name: "SMK 8" },
-  { id: "smk9", name: "SMK 9" },
-  { id: "smk10", name: "SMK 10" },
+  { id: "smk1", name: "SMKN" },
+  { id: "smk2", name: "SMKN" },
+  { id: "smk3", name: "SMKN" },
+  { id: "smk4", name: "SMKN" },
+  { id: "smk5", name: "SMKN" },
+  { id: "smk6", name: "SMKN" },
+  { id: "smk7", name: "SMKN" },
+  { id: "smk8", name: "SMKN" },
+  { id: "smk9", name: "SMKN" },
+  { id: "smk10", name: "SMKN" },
 ];
 
 // Data untuk Content Usage Distribution (tetap sama)
 const contentUsage = [
   { title: "Ask Anything", percentage: 50, color: "bg-blue-500" },
-  { title: "Open-ended queries", percentage: 100, color: "bg-green-500" },
+  // { title: "Open-ended queries", percentage: 100, color: "bg-green-500" },
   { title: "Learning Journey", percentage: 50, color: "bg-green-500" },
-  { title: "Structured lessons", percentage: 100, color: "bg-green-500" },
+  // { title: "Structured lessons", percentage: 100, color: "bg-green-500" },
 ];
 
 const EngagementData = () => {
