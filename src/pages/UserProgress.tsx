@@ -5,20 +5,36 @@ import {
   Download,
   ChevronLeft,
   ChevronRight,
+  ChevronUp,
+  ChevronDown,
 } from "lucide-react";
 import { FilterButton } from "../components/Filter/FilterButton";
 import { GroupFilterModal } from "../components/Filter/GroupFIlterModal";
 import { PeriodFilterModal } from "../components/Filter/PeriodFilterModal";
 import { CreateGroupModal } from "../components/Filter/CreateGroupModal";
 
+// --- Types ---
+type SortField =
+  | "name"
+  | "level"
+  | "referral"
+  | "logs"
+  | "curriculumProgress"
+  | "vocabularyProgress"
+  | "grammarProgress"
+  | "lastActivity"
+  | "subscription"
+  | "content";
+type SortDirection = "asc" | "desc";
+
 // --- Dummy Data ---
 const learnersData = [
   {
     id: 1,
-    name: "Sarah",
-    email: "sarah@email.com",
+    name: "Sarah Chen",
+    email: "sarah.chen@email.com",
     level: "B2",
-    referral: "SMKN",
+    referral: "SMKMITRA",
     logs: 690,
     curriculumProgress: 85,
     vocabularyProgress: 78,
@@ -30,10 +46,10 @@ const learnersData = [
   },
   {
     id: 2,
-    name: "Abdul Purnomo",
-    email: "abdulpurnomo@email.com",
+    name: "Michael Rodriguez",
+    email: "m.rodriguez@email.com",
     level: "A2",
-    referral: "SMKN",
+    referral: "SMKMITRA",
     logs: 658,
     curriculumProgress: 64,
     vocabularyProgress: 71,
@@ -45,25 +61,25 @@ const learnersData = [
   },
   {
     id: 3,
-    name: "Amanda Putri",
-    email: "amandaputri@email.com",
+    name: "Emma Thompson",
+    email: "emma.t@email.com",
     level: "A1",
-    referral: "SMKN",
+    referral: "01BEKASI",
     logs: 587,
     curriculumProgress: 32,
     vocabularyProgress: 45,
     grammarProgress: 28,
     lastActivity: "1 day ago",
     group: ["Remedial"],
-    subscription: "Regular-2",
+    subscription: "Guest",
     content: "Unknown",
   },
   {
     id: 4,
-    name: "Tania Putri",
-    email: "taniaputri@email.com",
+    name: "David Kim",
+    email: "david.kim@email.com",
     level: "B1",
-    referral: "SMKN",
+    referral: "ANANDA",
     logs: 570,
     curriculumProgress: 91,
     vocabularyProgress: 89,
@@ -75,10 +91,10 @@ const learnersData = [
   },
   {
     id: 5,
-    name: "Lisa",
-    email: "lisa@email.com",
+    name: "Lisa Wang",
+    email: "lisa.wang@email.com",
     level: "A2",
-    referral: "SMKN",
+    referral: "1CIKBAR",
     logs: 478,
     curriculumProgress: 56,
     vocabularyProgress: 68,
@@ -91,10 +107,10 @@ const learnersData = [
   // Adding more dummy data for pagination demonstration
   {
     id: 6,
-    name: "Marsel",
-    email: "marsel@email.com",
+    name: "John Smith",
+    email: "john.smith@email.com",
     level: "B1",
-    referral: "SMKN",
+    referral: "SMKMITRA",
     logs: 445,
     curriculumProgress: 72,
     vocabularyProgress: 65,
@@ -106,25 +122,25 @@ const learnersData = [
   },
   {
     id: 7,
-    name: "Anna",
-    email: "anna@email.com",
+    name: "Anna Johnson",
+    email: "anna.johnson@email.com",
     level: "A1",
-    referral: "SMKN",
+    referral: "01BEKASI",
     logs: 321,
     curriculumProgress: 25,
     vocabularyProgress: 30,
     grammarProgress: 18,
     lastActivity: "2 days ago",
     group: ["Remedial"],
-    subscription: "Regular-1",
+    subscription: "Guest",
     content: "Unknown",
   },
   {
     id: 8,
-    name: "Adhitya Pratama",
-    email: "adhitya.pratama@email.com",
+    name: "Robert Brown",
+    email: "robert.brown@email.com",
     level: "B2",
-    referral: "SMKN",
+    referral: "ANANDA",
     logs: 756,
     curriculumProgress: 88,
     vocabularyProgress: 92,
@@ -136,10 +152,10 @@ const learnersData = [
   },
   {
     id: 9,
-    name: "Putri",
-    email: "putri@email.com",
+    name: "Maria Garcia",
+    email: "maria.garcia@email.com",
     level: "A2",
-    referral: "SMKN",
+    referral: "1CIKBAR",
     logs: 512,
     curriculumProgress: 58,
     vocabularyProgress: 63,
@@ -151,10 +167,10 @@ const learnersData = [
   },
   {
     id: 10,
-    name: "Asep Sunandar",
-    email: "asep.sunandar@email.com",
+    name: "James Wilson",
+    email: "james.wilson@email.com",
     level: "B1",
-    referral: "SMKN",
+    referral: "SMKMITRA",
     logs: 634,
     curriculumProgress: 75,
     vocabularyProgress: 82,
@@ -166,25 +182,25 @@ const learnersData = [
   },
   {
     id: 11,
-    name: "Agus Salim",
-    email: "agus.salim@email.com",
+    name: "Linda Davis",
+    email: "linda.davis@email.com",
     level: "A1",
-    referral: "SMKN",
+    referral: "01BEKASI",
     logs: 289,
     curriculumProgress: 15,
     vocabularyProgress: 22,
     grammarProgress: 12,
     lastActivity: "1 day ago",
     group: ["Remedial"],
-    subscription: "Regular-2",
+    subscription: "Guest",
     content: "Unknown",
   },
   {
     id: 12,
-    name: "Tommy",
-    email: "tommy@email.com",
+    name: "William Martinez",
+    email: "william.martinez@email.com",
     level: "B2",
-    referral: "SMKN",
+    referral: "ANANDA",
     logs: 823,
     curriculumProgress: 95,
     vocabularyProgress: 88,
@@ -200,105 +216,105 @@ const learnersData = [
 const sampleUsers = [
   {
     id: 1,
-    name: "Putri Sari",
-    email: "putri.sari@example.com",
+    name: "John Doe",
+    email: "john.doe@example.com",
     level: "A1",
     referral: "REF001",
   },
   {
     id: 2,
-    name: "Agus Salim",
-    email: "agus.salim@example.com",
+    name: "Jane Smith",
+    email: "jane.smith@example.com",
     level: "A2",
     referral: "REF002",
   },
   {
     id: 3,
-    name: "Amanda Grace",
-    email: "amanda.grace@example.com",
+    name: "Bob Johnson",
+    email: "bob.johnson@example.com",
     level: "B1",
     referral: "REF003",
   },
   {
     id: 4,
-    name: "Brian Hanif",
-    email: "brian.hanif@example.com",
+    name: "Alice Brown",
+    email: "alice.brown@example.com",
     level: "B2",
     referral: "REF004",
   },
   {
     id: 5,
-    name: "Asep Rizky",
-    email: "asep.rizky@example.com",
+    name: "Charlie Wilson",
+    email: "charlie.wilson@example.com",
     level: "C1",
     referral: "REF005",
   },
   {
     id: 6,
-    name: "Ahmad Firdaus",
-    email: "ahmad.firdaus@example.com",
+    name: "Diana Davis",
+    email: "diana.davis@example.com",
     level: "A1",
     referral: "REF006",
   },
   {
     id: 7,
-    name: "Budi Supriyanto",
-    email: "budi.supriyanto@example.com",
+    name: "Eva Miller",
+    email: "eva.miller@example.com",
     level: "A2",
     referral: "REF007",
   },
   {
     id: 8,
-    name: "Larasati",
-    email: "larasati@example.com",
+    name: "Frank Garcia",
+    email: "frank.garcia@example.com",
     level: "B1",
     referral: "REF008",
   },
   {
     id: 9,
-    name: "Hendra Pratama",
-    email: "hendra.pratama@example.com",
+    name: "Grace Lee",
+    email: "grace.lee@example.com",
     level: "B2",
     referral: "REF009",
   },
   {
     id: 10,
-    name: "Johan Henry",
-    email: "johan.henry@example.com",
+    name: "Henry Martinez",
+    email: "henry.martinez@example.com",
     level: "C1",
     referral: "REF010",
   },
   {
     id: 11,
-    name: "Jorgy amat",
-    email: "jorgy.amat@example.com",
+    name: "Ivy Thompson",
+    email: "ivy.thompson@example.com",
     level: "A1",
     referral: "REF011",
   },
   {
     id: 12,
-    name: "Gilang Sulistio",
-    email: "gilang.sulistio@example.com",
+    name: "Jack Anderson",
+    email: "jack.anderson@example.com",
     level: "A2",
     referral: "REF012",
   },
   {
     id: 13,
-    name: "Salsabila Putri",
-    email: "salsabila.putri@example.com",
+    name: "Kelly White",
+    email: "kelly.white@example.com",
     level: "B1",
     referral: "REF013",
   },
   {
     id: 14,
-    name: "James Leo Rodriguez",
+    name: "Leo Rodriguez",
     email: "leo.rodriguez@example.com",
     level: "B2",
     referral: "REF014",
   },
   {
     id: 15,
-    name: "Maya Elizabeth Patel",
+    name: "Maya Patel",
     email: "maya.patel@example.com",
     level: "C1",
     referral: "REF015",
@@ -307,19 +323,23 @@ const sampleUsers = [
 
 const schoolGroups = [
   { id: "all", name: "Select All" },
-  { id: "smk1", name: "SMKN" },
-  { id: "smk2", name: "SMKN" },
-  { id: "smk3", name: "SMKN" },
-  { id: "smk4", name: "SMKN" },
-  { id: "smk5", name: "SMKN" },
-  { id: "smk6", name: "SMKN" },
-  { id: "smk7", name: "SMKN" },
-  { id: "smk8", name: "SMKN" },
-  { id: "smk9", name: "SMKN" },
-  { id: "smk10", name: "SMKN" },
+  { id: "smk1", name: "SMK 1" },
+  { id: "smk2", name: "SMK 2" },
+  { id: "smk3", name: "SMK 3" },
+  { id: "smk4", name: "SMK 4" },
+  { id: "smk5", name: "SMK 5" },
+  { id: "smk6", name: "SMK 6" },
+  { id: "smk7", name: "SMK 7" },
+  { id: "smk8", name: "SMK 8" },
+  { id: "smk9", name: "SMK 9" },
+  { id: "smk10", name: "SMK 10" },
 ];
 
 const UserProgress = () => {
+  // Sorting state
+  const [sortField, setSortField] = useState<SortField | null>(null);
+  const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
+
   // Filter
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   // Group Filter Modal
@@ -345,6 +365,129 @@ const UserProgress = () => {
   // Search and filtering
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredLearners, setFilteredLearners] = useState(learnersData);
+
+  // Helper function to convert time ago to comparable number
+  const parseTimeAgo = (timeAgo: string): number => {
+    const now = new Date().getTime();
+    const timeString = timeAgo.toLowerCase();
+
+    if (timeString.includes("minute")) {
+      const minutes = parseInt(timeString.match(/\d+/)?.[0] || "0");
+      return now - minutes * 60 * 1000;
+    } else if (timeString.includes("hour")) {
+      const hours = parseInt(timeString.match(/\d+/)?.[0] || "0");
+      return now - hours * 60 * 60 * 1000;
+    } else if (timeString.includes("day")) {
+      const days = parseInt(timeString.match(/\d+/)?.[0] || "0");
+      return now - days * 24 * 60 * 60 * 1000;
+    }
+
+    return now; // Default to now if can't parse
+  };
+
+  // Helper function to get level priority for sorting
+  const getLevelPriority = (level: string): number => {
+    const levels = { A1: 1, A2: 2, B1: 3, B2: 4, C1: 5, C2: 6 };
+    return levels[level as keyof typeof levels] || 0;
+  };
+
+  // Sorting function
+  const sortData = (
+    data: typeof learnersData,
+    field: SortField,
+    direction: SortDirection
+  ) => {
+    return [...data].sort((a, b) => {
+      let aValue: any;
+      let bValue: any;
+
+      switch (field) {
+        case "name":
+          aValue = a.name.toLowerCase();
+          bValue = b.name.toLowerCase();
+          break;
+        case "level":
+          aValue = getLevelPriority(a.level);
+          bValue = getLevelPriority(b.level);
+          break;
+        case "referral":
+          aValue = a.referral.toLowerCase();
+          bValue = b.referral.toLowerCase();
+          break;
+        case "logs":
+          aValue = a.logs;
+          bValue = b.logs;
+          break;
+        case "curriculumProgress":
+          aValue = a.curriculumProgress;
+          bValue = b.curriculumProgress;
+          break;
+        case "vocabularyProgress":
+          aValue = a.vocabularyProgress;
+          bValue = b.vocabularyProgress;
+          break;
+        case "grammarProgress":
+          aValue = a.grammarProgress;
+          bValue = b.grammarProgress;
+          break;
+        case "lastActivity":
+          aValue = parseTimeAgo(a.lastActivity);
+          bValue = parseTimeAgo(b.lastActivity);
+          break;
+        case "subscription":
+          aValue = a.subscription.toLowerCase();
+          bValue = b.subscription.toLowerCase();
+          break;
+        case "content":
+          aValue = a.content.toLowerCase();
+          bValue = b.content.toLowerCase();
+          break;
+        default:
+          return 0;
+      }
+
+      if (aValue < bValue) {
+        return direction === "asc" ? -1 : 1;
+      }
+      if (aValue > bValue) {
+        return direction === "asc" ? 1 : -1;
+      }
+      return 0;
+    });
+  };
+
+  // Handle sorting
+  const handleSort = (field: SortField) => {
+    if (sortField === field) {
+      if (sortDirection === "asc") {
+        setSortDirection("desc");
+      } else if (sortDirection === "desc") {
+        setSortField(null);
+        setSortDirection("asc"); // Reset ke default
+      }
+    } else {
+      setSortField(field);
+      setSortDirection("asc");
+    }
+  };
+
+  // Sort icon component
+  const SortIcon = ({ field }: { field: SortField }) => {
+    if (sortField !== field) {
+      return (
+        <div className="flex flex-col ml-1">
+          <ChevronUp className="w-3 h-3 text-gray-300" />
+          <ChevronDown className="w-3 h-3 text-gray-300 -mt-1" />
+        </div>
+      );
+    }
+
+    return sortDirection === "asc" ? (
+      <ChevronUp className="w-4 h-4 text-blue-500 ml-1" />
+    ) : (
+      <ChevronDown className="w-4 h-4 text-blue-500 ml-1" />
+    );
+  };
 
   // Filter users based on search term
   const filteredUsers = sampleUsers.filter(
@@ -477,15 +620,21 @@ const UserProgress = () => {
   );
 
   useEffect(() => {
-    const filtered = learnersData.filter(
+    let filtered = learnersData.filter(
       (learner) =>
         learner.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         learner.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
         learner.referral.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    // Apply sorting if there's a sort field
+    if (sortField) {
+      filtered = sortData(filtered, sortField, sortDirection);
+    }
+
     setFilteredLearners(filtered);
     setLearnerCurrentPage(1); // Reset to first page when search changes
-  }, [searchTerm]);
+  }, [searchTerm, sortField, sortDirection]);
 
   const getProgressBarColor = (progress: number) => {
     if (progress > 80) return "bg-green-500";
@@ -503,6 +652,8 @@ const UserProgress = () => {
         return "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300";
       case "B1":
         return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300";
+      case "C1":
+        return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300";
       default:
         return "bg-gray-100 text-gray-800 dark:bg-gray-700/30 dark:text-gray-300";
     }
@@ -752,17 +903,97 @@ const UserProgress = () => {
         <table className="table-auto w-full whitespace-nowrap">
           <thead>
             <tr className="text-left text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
-              <th className="p-4 font-semibold">LEARNER</th>
+              <th
+                className="p-4 font-semibold cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors duration-200"
+                onClick={() => handleSort("name")}
+              >
+                <div className="flex items-center">
+                  LEARNER
+                  <SortIcon field="name" />
+                </div>
+              </th>
               <th className="p-4 font-semibold">GROUP</th>
-              <th className="p-4 font-semibold">SUBSCRIPTION</th>
-              <th className="p-4 font-semibold">LEVEL</th>
-              <th className="p-4 font-semibold">REFERRAL</th>
-              <th className="p-4 font-semibold">LOGS</th>
-              <th className="p-4 font-semibold">CONTENT</th>
-              <th className="p-4 font-semibold">CURRICULUM</th>
-              <th className="p-4 font-semibold">VOCABULARY</th>
-              <th className="p-4 font-semibold">GRAMMAR</th>
-              <th className="p-4 font-semibold">LAST ACTIVITY</th>
+              <th
+                className="p-4 font-semibold cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors duration-200"
+                onClick={() => handleSort("subscription")}
+              >
+                <div className="flex items-center">
+                  SUBSCRIPTION
+                  <SortIcon field="subscription" />
+                </div>
+              </th>
+              <th
+                className="p-4 font-semibold cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors duration-200"
+                onClick={() => handleSort("level")}
+              >
+                <div className="flex items-center">
+                  LEVEL
+                  <SortIcon field="level" />
+                </div>
+              </th>
+              <th
+                className="p-4 font-semibold cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors duration-200"
+                onClick={() => handleSort("referral")}
+              >
+                <div className="flex items-center">
+                  REFERRAL
+                  <SortIcon field="referral" />
+                </div>
+              </th>
+              <th
+                className="p-4 font-semibold cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors duration-200"
+                onClick={() => handleSort("logs")}
+              >
+                <div className="flex items-center">
+                  LOGS
+                  <SortIcon field="logs" />
+                </div>
+              </th>
+              <th
+                className="p-4 font-semibold cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors duration-200"
+                onClick={() => handleSort("content")}
+              >
+                <div className="flex items-center">
+                  CONTENT
+                  <SortIcon field="content" />
+                </div>
+              </th>
+              <th
+                className="p-4 font-semibold cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors duration-200"
+                onClick={() => handleSort("curriculumProgress")}
+              >
+                <div className="flex items-center">
+                  CURRICULUM
+                  <SortIcon field="curriculumProgress" />
+                </div>
+              </th>
+              <th
+                className="p-4 font-semibold cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors duration-200"
+                onClick={() => handleSort("vocabularyProgress")}
+              >
+                <div className="flex items-center">
+                  VOCABULARY
+                  <SortIcon field="vocabularyProgress" />
+                </div>
+              </th>
+              <th
+                className="p-4 font-semibold cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors duration-200"
+                onClick={() => handleSort("grammarProgress")}
+              >
+                <div className="flex items-center">
+                  GRAMMAR
+                  <SortIcon field="grammarProgress" />
+                </div>
+              </th>
+              <th
+                className="p-4 font-semibold cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors duration-200"
+                onClick={() => handleSort("lastActivity")}
+              >
+                <div className="flex items-center">
+                  LAST ACTIVITY
+                  <SortIcon field="lastActivity" />
+                </div>
+              </th>
             </tr>
           </thead>
           <tbody>
