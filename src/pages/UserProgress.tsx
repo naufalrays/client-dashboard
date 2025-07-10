@@ -476,8 +476,8 @@ const UserProgress = () => {
     if (sortField !== field) {
       return (
         <div className="flex flex-col ml-1">
-          <ChevronUp className="w-3 h-3 text-gray-300" />
-          <ChevronDown className="w-3 h-3 text-gray-300 -mt-1" />
+          <ChevronUp className="w-3 h-3 text-gray-400 dark:text-gray-300" />
+          <ChevronDown className="w-3 h-3 text-gray-400 dark:text-gray-300 -mt-1" />
         </div>
       );
     }
