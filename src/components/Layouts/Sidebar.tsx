@@ -61,7 +61,10 @@ const Sidebar = () => {
       >
         <div className="bg-white dark:bg-black h-full">
           <div className="flex justify-between items-center px-4 py-3">
-            <NavLink to="/" className="main-logo flex items-center shrink-0">
+            <NavLink
+              to="/dashboard"
+              className="main-logo flex items-center shrink-0"
+            >
               {/* <img
                 className="w-8 ml-[5px] flex-none"
                 src="/assets/images/logo.svg"
@@ -83,7 +86,7 @@ const Sidebar = () => {
           <PerfectScrollbar className="h-[calc(100vh-80px)] relative">
             <ul className="relative font-semibold space-y-0.5 p-4 py-0">
               <li className="nav-item">
-                <NavLink to="/" className="group">
+                <NavLink to="/dashboard" className="group">
                   <div className="flex items-center">
                     <House className="group-hover:!text-primary shrink-0" />
                     <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">

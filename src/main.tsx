@@ -14,12 +14,15 @@ import router from "./router/index";
 // Redux
 import { Provider } from "react-redux";
 import store from "./store/index";
+import { AuthProvider } from "./contexts/AuthContext";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <Suspense>
       <Provider store={store}>
-        <RouterProvider router={router} />
+        <AuthProvider>
+          <RouterProvider router={router} />
+        </AuthProvider>
       </Provider>
     </Suspense>
   </React.StrictMode>

@@ -126,111 +126,11 @@ const sampleUsers = [
     level: "A2",
     referral: "REF002",
   },
-  {
-    id: 3,
-    name: "Bob Johnson",
-    email: "bob.johnson@example.com",
-    level: "B1",
-    referral: "REF003",
-  },
-  {
-    id: 4,
-    name: "Alice Brown",
-    email: "alice.brown@example.com",
-    level: "B2",
-    referral: "REF004",
-  },
-  {
-    id: 5,
-    name: "Charlie Wilson",
-    email: "charlie.wilson@example.com",
-    level: "C1",
-    referral: "REF005",
-  },
-  {
-    id: 6,
-    name: "Diana Davis",
-    email: "diana.davis@example.com",
-    level: "A1",
-    referral: "REF006",
-  },
-  {
-    id: 7,
-    name: "Eva Miller",
-    email: "eva.miller@example.com",
-    level: "A2",
-    referral: "REF007",
-  },
-  {
-    id: 8,
-    name: "Frank Garcia",
-    email: "frank.garcia@example.com",
-    level: "B1",
-    referral: "REF008",
-  },
-  {
-    id: 9,
-    name: "Grace Lee",
-    email: "grace.lee@example.com",
-    level: "B2",
-    referral: "REF009",
-  },
-  {
-    id: 10,
-    name: "Henry Martinez",
-    email: "henry.martinez@example.com",
-    level: "C1",
-    referral: "REF010",
-  },
-  {
-    id: 11,
-    name: "Ivy Thompson",
-    email: "ivy.thompson@example.com",
-    level: "A1",
-    referral: "REF011",
-  },
-  {
-    id: 12,
-    name: "Jack Anderson",
-    email: "jack.anderson@example.com",
-    level: "A2",
-    referral: "REF012",
-  },
-  {
-    id: 13,
-    name: "Kelly White",
-    email: "kelly.white@example.com",
-    level: "B1",
-    referral: "REF013",
-  },
-  {
-    id: 14,
-    name: "Leo Rodriguez",
-    email: "leo.rodriguez@example.com",
-    level: "B2",
-    referral: "REF014",
-  },
-  {
-    id: 15,
-    name: "Maya Patel",
-    email: "maya.patel@example.com",
-    level: "C1",
-    referral: "REF015",
-  },
 ];
 
 const schoolGroups = [
   { id: "all", name: "Select All" },
   { id: "smk1", name: "SMKN" },
-  { id: "smk2", name: "SMKN" },
-  { id: "smk3", name: "SMKN" },
-  { id: "smk4", name: "SMKN" },
-  { id: "smk5", name: "SMKN" },
-  { id: "smk6", name: "SMKN" },
-  { id: "smk7", name: "SMKN" },
-  { id: "smk8", name: "SMKN" },
-  { id: "smk9", name: "SMKN" },
-  { id: "smk10", name: "SMKN" },
 ];
 
 // Data untuk Content Usage Distribution (tetap sama)
@@ -238,7 +138,7 @@ const contentUsage = [
   { title: "Ask Anything", percentage: 50, color: "bg-blue-500" },
   // { title: "Open-ended queries", percentage: 100, color: "bg-green-500" },
   { title: "Learning Journey", percentage: 50, color: "bg-green-500" },
-  // { title: "Structured lessons", percentage: 100, color: "bg-green-500" },
+  { title: "Speech Converter", percentage: 50, color: "bg-orange-500" },
 ];
 
 const EngagementData = () => {
@@ -475,7 +375,7 @@ const EngagementData = () => {
         {/* Top Log Users */}
         <div className="panel">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
+            <h2 className="text-lg py-1 font-semibold text-gray-800 dark:text-white">
               Top Log Users
             </h2>
             <div className="relative">
@@ -548,7 +448,7 @@ const EngagementData = () => {
 
         {/* Top Lesson Users */}
         <div className="panel">
-          <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
+          <h2 className="text-lg py-1 font-semibold text-gray-800 dark:text-white mb-4">
             Top Lesson Users
           </h2>
           <ul className="space-y-4">

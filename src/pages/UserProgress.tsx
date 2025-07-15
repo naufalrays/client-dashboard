@@ -24,7 +24,7 @@ type SortField =
   | "grammarProgress"
   | "lastActivity"
   | "subscription"
-  | "content";
+  | "context";
 type SortDirection = "asc" | "desc";
 
 // --- Dummy Data ---
@@ -42,7 +42,7 @@ const learnersData = [
     lastActivity: "2 hours ago",
     group: ["XII IPA 1", "English Club"],
     subscription: "Premium Month",
-    content: "Learning",
+    context: "Learning",
   },
   {
     id: 2,
@@ -57,7 +57,7 @@ const learnersData = [
     lastActivity: "5 hours ago",
     group: [],
     subscription: "Regular-2",
-    content: "Fun",
+    context: "Fun",
   },
   {
     id: 3,
@@ -72,7 +72,7 @@ const learnersData = [
     lastActivity: "1 day ago",
     group: ["Remedial"],
     subscription: "Regular-2",
-    content: "Unknown",
+    context: "Unknown",
   },
   {
     id: 4,
@@ -87,7 +87,7 @@ const learnersData = [
     lastActivity: "30 minutes ago",
     group: ["XII IPA 2"],
     subscription: "Regular",
-    content: "Learning",
+    context: "Learning",
   },
   {
     id: 5,
@@ -102,7 +102,7 @@ const learnersData = [
     lastActivity: "1 hour ago",
     group: [],
     subscription: "Regular-1",
-    content: "Fun",
+    context: "Fun",
   },
   // Adding more dummy data for pagination demonstration
   {
@@ -118,7 +118,7 @@ const learnersData = [
     lastActivity: "3 hours ago",
     group: ["XII IPA 1"],
     subscription: "Premium Month",
-    content: "Learning",
+    context: "Learning",
   },
   {
     id: 7,
@@ -133,7 +133,7 @@ const learnersData = [
     lastActivity: "2 days ago",
     group: ["Remedial"],
     subscription: "Regular-1",
-    content: "Unknown",
+    context: "Unknown",
   },
   {
     id: 8,
@@ -148,7 +148,7 @@ const learnersData = [
     lastActivity: "1 hour ago",
     group: ["XII IPA 2", "English Club"],
     subscription: "Premium Month",
-    content: "Learning",
+    context: "Learning",
   },
   {
     id: 9,
@@ -163,7 +163,7 @@ const learnersData = [
     lastActivity: "4 hours ago",
     group: [],
     subscription: "Regular-1",
-    content: "Fun",
+    context: "Fun",
   },
   {
     id: 10,
@@ -178,7 +178,7 @@ const learnersData = [
     lastActivity: "6 hours ago",
     group: ["XII IPA 1"],
     subscription: "Regular",
-    content: "Learning",
+    context: "Learning",
   },
   {
     id: 11,
@@ -193,7 +193,7 @@ const learnersData = [
     lastActivity: "1 day ago",
     group: ["Remedial"],
     subscription: "Regular-2",
-    content: "Unknown",
+    context: "Unknown",
   },
   {
     id: 12,
@@ -208,7 +208,7 @@ const learnersData = [
     lastActivity: "30 minutes ago",
     group: ["XII IPA 2", "English Club"],
     subscription: "Premium Month",
-    content: "Learning",
+    context: "Learning",
   },
 ];
 
@@ -438,9 +438,9 @@ const UserProgress = () => {
           aValue = a.subscription.toLowerCase();
           bValue = b.subscription.toLowerCase();
           break;
-        case "content":
-          aValue = a.content.toLowerCase();
-          bValue = b.content.toLowerCase();
+        case "context":
+          aValue = a.context.toLowerCase();
+          bValue = b.context.toLowerCase();
           break;
         default:
           return 0;
@@ -951,11 +951,11 @@ const UserProgress = () => {
               </th>
               <th
                 className="p-4 font-semibold cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors duration-200"
-                onClick={() => handleSort("content")}
+                onClick={() => handleSort("context")}
               >
                 <div className="flex items-center">
-                  CONTENT
-                  <SortIcon field="content" />
+                  CONTEXT
+                  <SortIcon field="context" />
                 </div>
               </th>
               <th
@@ -1041,19 +1041,17 @@ const UserProgress = () => {
                 <td className="p-4">
                   <span
                     className={`px-2 py-0.5 rounded text-xs font-medium ${getContentBadgeColor(
-                      learner.content
+                      learner.context
                     )}`}
                   >
-                    {learner.content}
+                    {learner.context}
                   </span>
                 </td>
                 <td className="p-4">
                   <div className="flex items-center gap-2">
                     <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                       <div
-                        className={`h-full rounded-full ${getProgressBarColor(
-                          learner.curriculumProgress
-                        )}`}
+                        className={`h-full rounded-full bg-blue-500`}
                         style={{ width: `${learner.curriculumProgress}%` }}
                       ></div>
                     </div>
@@ -1066,9 +1064,7 @@ const UserProgress = () => {
                   <div className="flex items-center gap-2">
                     <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                       <div
-                        className={`h-full rounded-full ${getProgressBarColor(
-                          learner.vocabularyProgress
-                        )}`}
+                        className={`h-full rounded-full bg-red-500`}
                         style={{ width: `${learner.vocabularyProgress}%` }}
                       ></div>
                     </div>
@@ -1081,9 +1077,7 @@ const UserProgress = () => {
                   <div className="flex items-center gap-2">
                     <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                       <div
-                        className={`h-full rounded-full ${getProgressBarColor(
-                          learner.grammarProgress
-                        )}`}
+                        className={`h-full rounded-full bg-orange-500`}
                         style={{ width: `${learner.grammarProgress}%` }}
                       ></div>
                     </div>

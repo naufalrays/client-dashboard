@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { toggleTheme, toggleSidebar } from "../../store/themeConfigSlice";
 import type { IRootState } from "../../store";
+import { useAuth } from "../../contexts/AuthContext";
+import { toast } from "react-toastify";
 
 // Import ikon dari Lucide React
 import Dropdown from "../Dropdown";
@@ -15,6 +17,8 @@ import IconMenu from "../Icon/IconMenu";
 
 const Header = () => {
   const location = useLocation();
+  const { logout, loading } = useAuth();
+
   useEffect(() => {
     const selector = document.querySelector(
       'ul.horizontal-menu a[href="' + window.location.pathname + '"]'
@@ -43,7 +47,28 @@ const Header = () => {
   const themeConfig = useSelector((state: IRootState) => state.themeConfig);
   const dispatch = useDispatch();
 
-  // const [search, setSearch] = useState(false);
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success("Logged out successfully!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    } catch (error) {
+      toast.error("Logout failed", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    }
+  };
 
   return (
     <header
@@ -162,10 +187,14 @@ const Header = () => {
                     </Link>
                   </li>
                   <li className="border-t border-white-light dark:border-white-light/10">
-                    <Link to="/auth/boxed-signin" className="text-danger !py-3">
+                    <button
+                      onClick={handleLogout}
+                      disabled={loading}
+                      className="text-danger !py-3 w-full text-left flex items-center px-4 py-2 hover:bg-white-light/90 dark:hover:bg-dark/60 disabled:opacity-50"
+                    >
                       <IconLogout className="w-4.5 h-4.5 ltr:mr-2 rtl:ml-2 rotate-90 shrink-0" />
-                      Sign Out
-                    </Link>
+                      {loading ? "Signing Out..." : "Sign Out"}
+                    </button>
                   </li>
                 </ul>
               </Dropdown>
