@@ -636,12 +636,6 @@ const UserProgress = () => {
     setLearnerCurrentPage(1); // Reset to first page when search changes
   }, [searchTerm, sortField, sortDirection]);
 
-  const getProgressBarColor = (progress: number) => {
-    if (progress > 80) return "bg-green-500";
-    if (progress > 50) return "bg-blue-500";
-    return "bg-orange-500";
-  };
-
   const getLevelBadgeColor = (level: string) => {
     switch (level) {
       case "B2":

@@ -19,7 +19,7 @@ export const authService = {
             // Simpan token di cookie dengan opsi keamanan
             Cookies.set(COOKIE_NAME, accessToken, {
                 expires: 7, // 7 hari
-                secure: process.env.NODE_ENV === 'production', // HTTPS only di production
+                // secure: process.env.NODE_ENV === 'production', // HTTPS only di production
                 sameSite: 'strict',
                 path: '/',
             });
