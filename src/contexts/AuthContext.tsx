@@ -28,11 +28,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     checkAuth();
   }, []);
 
-  const login = async (_: LoginRequest): Promise<void> => {
+  const login = async (credentials: LoginRequest): Promise<void> => {
     try {
       setLoading(true);
-      //TODO: UNCOMMENT THIS LINE WHEN READY
-      // await authService.login(credentials);
+      await authService.login(credentials);
       setIsAuthenticated(true);
       // Navigation akan di-handle di component Login
     } catch (error) {

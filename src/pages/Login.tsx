@@ -32,7 +32,7 @@ const Login = () => {
         navigate("/dashboard");
       }, 1000);
     } catch (error: any) {
-      toast.error("Login failed", {
+      toast.error("Email atau password salah", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,

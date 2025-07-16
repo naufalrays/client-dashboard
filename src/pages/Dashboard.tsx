@@ -9,6 +9,7 @@ import {
   Trophy,
   Users,
   X,
+  User,
 } from "lucide-react";
 import {
   LineChart,
@@ -25,91 +26,11 @@ import { CreateGroupModal } from "../components/Filter/CreateGroupModal";
 import {
   dashboardService,
   type DashboardOverviewResponse,
+  type RecentActivityItem,
+  type TopPerformerItem,
+  type ProgressChartItem,
 } from "../services/dashboardService";
 import { toast } from "react-toastify";
-
-const topPerformers = [
-  {
-    name: "Sarah",
-    email: "sarah@email.com",
-    points: 100,
-    referral: "SMKN",
-    level: "A1",
-    position: 1,
-  },
-  {
-    name: "Agus Salim",
-    email: "agus.salim@email.com",
-    points: 95,
-    referral: "SMKN",
-    level: "B2",
-    position: 2,
-  },
-  {
-    name: "Amanda Putri",
-    email: "amandaputri@email.com",
-    points: 90,
-    referral: "SMKN",
-    level: "B1",
-    position: 3,
-  },
-  {
-    name: "Asep David",
-    email: "asep.david@email.com",
-    points: 80,
-    referral: "SMKN",
-    level: "A2",
-    position: 4,
-  },
-  {
-    name: "Lisa",
-    email: "lisa@email.com",
-    points: 75,
-    referral: "SMKN",
-    level: "A1",
-    position: 5,
-  },
-];
-
-const progressData = [
-  { week: "Week 1", totalLog: 25 },
-  { week: "Week 2", totalLog: 50 },
-  { week: "Week 3", totalLog: 65 },
-  { week: "Week 4", totalLog: 80 },
-];
-
-const activities = [
-  {
-    icon: <CheckCircle className="w-5 h-5 text-green-500" />,
-    text: "Siska Berhasil menyelesaikan Assessment Test",
-    time: "2 hours ago",
-    color: "bg-green-50 dark:bg-green-900/20",
-  },
-  {
-    icon: <CheckCircle className="w-5 h-5 text-blue-500" />,
-    text: "John Berhasil menyelesaikan Vocab Lesson 006",
-    time: "Yesterday",
-    color: "bg-blue-50 dark:bg-blue-900/20",
-  },
-  // {
-  //   icon: <PlusCircle className="w-5 h-5 text-blue-500" />,
-  //   text: 'Enrolled in "Advanced React Patterns" module.',
-  //   time: "Yesterday",
-  //   color: "bg-blue-50 dark:bg-blue-900/20",
-  // },
-  // {
-  //   icon: <BookOpen className="w-5 h-5 text-purple-500" />,
-  //   text: 'Started "Data Structures & Algorithms" lesson.',
-  //   time: "2 days ago",
-  //   color: "bg-purple-50 dark:bg-purple-900/20",
-  // },
-  // {
-  //   icon: <MessageSquare className="w-5 h-5 text-orange-500" />,
-  //   text: 'Replied to a query in "Community Forum".',
-  //   time: "3 days ago",
-  //   color: "bg-orange-50 dark:bg-orange-900/20",
-  // },
-];
 
 const schoolGroups = [
   { id: "all", name: "Select All" },
@@ -261,7 +182,17 @@ const Dashboard = () => {
   const [dashboardData, setDashboardData] = useState<
     DashboardOverviewResponse["data"] | null
   >(null);
+  const [recentActivities, setRecentActivities] = useState<
+    RecentActivityItem[]
+  >([]);
+  const [topPerformers, setTopPerformers] = useState<TopPerformerItem[]>([]);
+  const [progressData, setProgressData] = useState<ProgressChartItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activitiesLoading, setActivitiesLoading] = useState(false);
+  const [topPerformersLoading, setTopPerformersLoading] = useState(false);
+  const [progressLoading, setProgressLoading] = useState(false);
+  const [activitiesPage, setActivitiesPage] = useState(1);
+  const [hasMoreActivities, setHasMoreActivities] = useState(true);
 
   const fetchDashboardData = async () => {
     try {
@@ -279,10 +210,107 @@ const Dashboard = () => {
     }
   };
 
-  // Fetch dashboard data
+  const fetchRecentActivities = async () => {
+    try {
+      setActivitiesLoading(true);
+      const response = await dashboardService.getRecentActivity(1, 5);
+      setRecentActivities(response.data);
+    } catch (error: any) {
+      console.error("Failed to fetch recent activities:", error);
+      toast.error("Failed to load recent activities", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+    } finally {
+      setActivitiesLoading(false);
+    }
+  };
+
+  const fetchTopPerformers = async () => {
+    try {
+      setTopPerformersLoading(true);
+      const response = await dashboardService.getTopPerformers();
+      setTopPerformers(response.data);
+    } catch (error: any) {
+      console.error("Failed to fetch top performers:", error);
+      toast.error("Failed to load top performers", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+    } finally {
+      setTopPerformersLoading(false);
+    }
+  };
+
+  const fetchProgressChart = async () => {
+    try {
+      setProgressLoading(true);
+      const response = await dashboardService.getProgressChart();
+
+      // Sort data by week number for proper chronological order
+      const sortedData = response.data.sort((a, b) => {
+        const weekA = parseInt(a.week.replace("Week ", ""));
+        const weekB = parseInt(b.week.replace("Week ", ""));
+        return weekA - weekB;
+      });
+
+      setProgressData(sortedData);
+    } catch (error: any) {
+      console.error("Failed to fetch progress chart:", error);
+      toast.error("Failed to load progress chart", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+    } finally {
+      setProgressLoading(false);
+    }
+  };
+
+  // Fetch all data
   useEffect(() => {
     fetchDashboardData();
+    fetchRecentActivities();
+    fetchTopPerformers();
+    fetchProgressChart();
   }, []);
+
+  // Function to get activity icon based on activity type
+  const getActivityIcon = (activity: string) => {
+    if (activity.toLowerCase().includes("conversation")) {
+      return <MessagesSquare className="w-5 h-5 text-blue-500" />;
+    } else if (
+      activity.toLowerCase().includes("assessment") ||
+      activity.toLowerCase().includes("test")
+    ) {
+      return <CheckCircle className="w-5 h-5 text-green-500" />;
+    } else if (
+      activity.toLowerCase().includes("lesson") ||
+      activity.toLowerCase().includes("vocab")
+    ) {
+      return <CheckCircle className="w-5 h-5 text-purple-500" />;
+    } else {
+      return <User className="w-5 h-5 text-gray-500" />;
+    }
+  };
+
+  // Function to get activity color based on activity type
+  const getActivityColor = (activity: string) => {
+    if (activity.toLowerCase().includes("conversation")) {
+      return "bg-blue-50 dark:bg-blue-900/20";
+    } else if (
+      activity.toLowerCase().includes("assessment") ||
+      activity.toLowerCase().includes("test")
+    ) {
+      return "bg-green-50 dark:bg-green-900/20";
+    } else if (
+      activity.toLowerCase().includes("lesson") ||
+      activity.toLowerCase().includes("vocab")
+    ) {
+      return "bg-purple-50 dark:bg-purple-900/20";
+    } else {
+      return "bg-gray-50 dark:bg-gray-900/20";
+    }
+  };
 
   // Filter users based on search term
   const filteredUsers = sampleUsers.filter(
@@ -601,174 +629,248 @@ const Dashboard = () => {
       {/* Top Performers and Progress Overview */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         <div className="panel">
-          {/* <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
-            Top Performers
-          </h2> */}
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg py-1 font-semibold text-gray-800 dark:text-white">
-              June Top Performers
+              Top Performers
             </h2>
-            <div className="relative">
-              <div className="flex justify-end">
-                <FilterButton
-                  isOpen={isTopPerformanceFilter}
-                  onClick={() => setIsTopPerformanceFilterOpen((prev) => !prev)}
-                />
-              </div>
+            <div className="flex items-center gap-2">
+              <div className="relative">
+                <div className="flex justify-end">
+                  <FilterButton
+                    isOpen={isTopPerformanceFilter}
+                    onClick={() =>
+                      setIsTopPerformanceFilterOpen((prev) => !prev)
+                    }
+                  />
+                </div>
 
-              {isTopPerformanceFilter && (
-                <div className="absolute right-0 mt-2 w-18 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-10 dark:bg-gray-800">
-                  <div className="py-1">
-                    <button
-                      className="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 text-center dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-gray-100"
-                      onClick={() => {
-                        setIsTopPerformanceFilterOpen(false);
+                {isTopPerformanceFilter && (
+                  <div className="absolute right-0 mt-2 w-18 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-10 dark:bg-gray-800">
+                    <div className="py-1">
+                      <button
+                        className="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 text-center dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-gray-100"
+                        onClick={() => setIsTopPerformanceFilterOpen(false)}
+                      >
+                        A1
+                      </button>
+                      <button
+                        className="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 text-center dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-gray-100"
+                        onClick={() => setIsTopPerformanceFilterOpen(false)}
+                      >
+                        A2
+                      </button>
+                      <button
+                        className="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 text-center dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-gray-100"
+                        onClick={() => setIsTopPerformanceFilterOpen(false)}
+                      >
+                        B1
+                      </button>
+                      <button
+                        className="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 text-center dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-gray-100"
+                        onClick={() => setIsTopPerformanceFilterOpen(false)}
+                      >
+                        B2
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {topPerformersLoading ? (
+            <div className="flex items-center justify-center py-8">
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+              <p className="ml-3 text-gray-600">Loading top performers...</p>
+            </div>
+          ) : topPerformers.length > 0 ? (
+            <ul className="space-y-3">
+              {topPerformers.map((user) => (
+                <li
+                  key={user.userId}
+                  className="flex items-center justify-between p-4 rounded-md bg-yellow-50 border border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-700"
+                >
+                  {/* Kiri: Rank + Nama + Email + Level */}
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center justify-center w-8 h-8 min-w-8 min-h-8 rounded-full bg-yellow-400 text-white font-bold text-base">
+                      {user.rank}
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm font-medium text-gray-900 dark:text-white">
+                          {user.name}
+                        </p>
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300">
+                          {user.level || "-"}
+                        </span>
+                      </div>
+                      <p className="text-xs text-gray-600 dark:text-gray-300">
+                        {user.email}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Kanan: Progress + Conversation Logs + Trophy */}
+                  <div className="flex items-center gap-3">
+                    <div className="text-right">
+                      <p className="text-sm font-semibold text-gray-800 dark:text-white">
+                        {user.curriculumProgress}%
+                      </p>
+                    </div>
+                    <Trophy className="w-5 h-5 text-yellow-500" />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+              <Trophy className="w-12 h-12 mx-auto mb-3 opacity-50" />
+              <p>No top performers data available</p>
+            </div>
+          )}
+        </div>
+
+        {/* Progress Overview - Updated with API data */}
+        <div className="panel">
+          <div className="flex items-center justify-between mb-4">
+            <div className="text-gray-800 dark:text-white">
+              <h2 className="text-lg font-semibold">Progress Overview</h2>
+              <h4 className="text-sm text-gray-600 dark:text-gray-400">
+                Average weekly progress of all users
+              </h4>
+            </div>
+          </div>
+
+          <div className="h-64 overflow-x-auto">
+            <div style={{ minWidth: progressData.length > 8 ? 700 : "100%" }}>
+              {progressLoading ? (
+                <div className="flex items-center justify-center h-full">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                  <p className="ml-3 text-gray-600">Loading chart...</p>
+                </div>
+              ) : progressData.length > 0 ? (
+                <ResponsiveContainer width="100%" height={250}>
+                  <LineChart data={progressData}>
+                    <XAxis
+                      dataKey="week"
+                      stroke="#888888"
+                      className="text-xs dark:text-gray-300"
+                      tickLine={false}
+                      axisLine={false}
+                      angle={-45}
+                      textAnchor="end"
+                      height={60}
+                      interval={0}
+                    />
+                    <YAxis
+                      domain={[0, "dataMax + 10"]}
+                      stroke="#888888"
+                      className="text-xs dark:text-gray-300"
+                      tickLine={false}
+                      axisLine={false}
+                    />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: "rgba(255, 255, 255, 0.9)",
+                        borderColor: "#e5e7eb",
+                        borderRadius: "0.375rem",
+                        padding: "0.5rem",
+                        fontSize: "0.875rem",
                       }}
-                    >
-                      A1
-                    </button>
-                    <button
-                      className="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 text-center dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-gray-100"
-                      onClick={() => {
-                        setIsTopPerformanceFilterOpen(false);
-                      }}
-                    >
-                      A2
-                    </button>
-                    <button
-                      className="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 text-center dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-gray-100"
-                      onClick={() => {
-                        setIsTopPerformanceFilterOpen(false);
-                      }}
-                    >
-                      B1
-                    </button>
-                    <button
-                      className="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 text-center dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-gray-100"
-                      onClick={() => {
-                        setIsTopPerformanceFilterOpen(false);
-                      }}
-                    >
-                      B2
-                    </button>
+                      itemStyle={{ color: "#1f2937" }}
+                      formatter={(value, _) => [
+                        `${value}%`,
+                        "Average Progress",
+                      ]}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="averageProgress"
+                      stroke="#4f46e5"
+                      strokeWidth={3}
+                      dot={{ r: 5 }}
+                      activeDot={{ r: 7 }}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="flex items-center justify-center h-full text-gray-500 dark:text-gray-400">
+                  <div className="text-center">
+                    <CheckCircle className="w-12 h-12 mx-auto mb-3 opacity-50" />
+                    <p>No progress data available</p>
                   </div>
                 </div>
               )}
             </div>
           </div>
-          <ul className="space-y-3">
-            {topPerformers.map((user) => (
-              <li
-                key={user.email}
-                className="flex items-center justify-between p-4 rounded-md bg-yellow-50 border border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-700"
-              >
-                {/* Kiri: No + Nama + Email + Level */}
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-yellow-400 text-white font-bold">
-                    {user.position}
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">
-                        {user.name}
-                      </p>
-                      <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300">
-                        {user.level}
-                      </span>
-                    </div>
-                    <p className="text-xs text-gray-600 dark:text-gray-300">
-                      {user.email}
-                    </p>
-                  </div>
-                </div>
+        </div>
+      </div>
 
-                {/* Kanan: Persen + Referral + Trophy */}
-                <div className="flex items-center gap-3">
-                  <div className="text-right">
-                    <p className="text-sm font-semibold text-gray-800 dark:text-white">
-                      {user.points}%
-                    </p>
-                    <p className="text-xs text-gray-800 dark:text-white">
-                      {user.referral}
-                    </p>
-                  </div>
-                  <Trophy className="w-5 h-5 text-yellow-500" />
+      {/* Recent Activity - Updated with API data */}
+      <div className="panel">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
+            Recent Activity
+          </h2>
+          <button
+            onClick={() => {
+              setRecentActivities([]);
+              setActivitiesPage(1);
+              setHasMoreActivities(true);
+              fetchRecentActivities();
+            }}
+            disabled={activitiesLoading}
+            className="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+          >
+            {activitiesLoading ? "Refreshing..." : "Refresh"}
+          </button>
+        </div>
+
+        {activitiesLoading ? (
+          <div className="flex items-center justify-center py-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <p className="ml-3 text-gray-600">Loading activities...</p>
+          </div>
+        ) : recentActivities.length > 0 ? (
+          <ul className="space-y-3">
+            {recentActivities.map((activity) => (
+              <li
+                key={activity.id}
+                className={`flex items-start gap-3 p-4 rounded-md ${getActivityColor(
+                  activity.activity
+                )}`}
+              >
+                <div className="mt-1">{getActivityIcon(activity.activity)}</div>
+                <div className="flex-1">
+                  <p className="text-gray-800 dark:text-gray-100">
+                    <span className="font-medium">{activity.userName}</span>{" "}
+                    {activity.activity.toLowerCase()}
+                  </p>
+                  <span className="text-sm text-gray-500 dark:text-gray-300">
+                    {activity.relativeTime}
+                  </span>
                 </div>
               </li>
             ))}
           </ul>
-        </div>
-
-        <div className="panel">
-          <div className="text-gray-800 dark:text-white mb-6">
-            <h2 className="text-lg font-semibold">Progress Overview</h2>
-            <h4 className="">Total weekly logs of all users</h4>
+        ) : (
+          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+            <User className="w-12 h-12 mx-auto mb-3 opacity-50" />
+            <p>No recent activities found</p>
           </div>
+        )}
 
-          <div className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={progressData}>
-                <XAxis
-                  dataKey="week"
-                  stroke="#888888"
-                  className="text-xs dark:text-gray-300"
-                  tickLine={false}
-                  axisLine={false}
-                />
-                <YAxis
-                  domain={[0, 100]}
-                  stroke="#888888"
-                  className="text-xs dark:text-gray-300"
-                  tickLine={false}
-                  axisLine={false}
-                />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "rgba(255, 255, 255, 0.9)",
-                    borderColor: "#e5e7eb",
-                    borderRadius: "0.375rem",
-                    padding: "0.5rem",
-                    fontSize: "0.875rem",
-                  }}
-                  itemStyle={{ color: "#1f2937" }}
-                  formatter={(value, _) => [`${value}`, "Total Log"]}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="totalLog"
-                  stroke="#4f46e5"
-                  strokeWidth={3}
-                  dot={{ r: 5 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </div>
-
-      {/* Recent Activity */}
-      <div className="panel">
-        <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
-          Recent Activity
-        </h2>
-        <ul className="space-y-3">
-          {activities.map((activity, idx) => (
-            <li
-              key={idx}
-              className={`flex items-start gap-3 p-4 rounded-md ${activity.color}`}
+        {hasMoreActivities && recentActivities.length > 0 && (
+          <div className="text-center mt-4">
+            <button
+              // onClick={fetchMoreActivities}
+              disabled={activitiesLoading}
+              className="px-4 py-2 text-sm bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 rounded disabled:opacity-50"
             >
-              <div className="mt-1">{activity.icon}</div>
-              <div>
-                <p className="text-gray-800 dark:text-gray-100">
-                  {activity.text}
-                </p>
-                <span className="text-sm text-gray-500 dark:text-gray-300">
-                  {activity.time}
-                </span>
-              </div>
-            </li>
-          ))}
-        </ul>
+              {activitiesLoading ? "Loading..." : "Load More"}
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Group Selection Modal */}
