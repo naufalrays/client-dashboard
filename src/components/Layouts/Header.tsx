@@ -6,8 +6,9 @@ import type { IRootState } from "../../store";
 import { useAuth } from "../../contexts/AuthContext";
 import { toast } from "react-toastify";
 
-// Import ikon dari Lucide React
+// Import components
 import Dropdown from "../Dropdown";
+import { GlobalFilterWidget } from "../GlobalFilter/GlobalFilterWidget";
 import IconSun from "../Icon/IconSun";
 import IconMoon from "../Icon/IconMoon";
 import IconLaptop from "../Icon/IconLaptop";
@@ -93,14 +94,25 @@ const Header = () => {
               <h1 className="text-xl font-bold dark:text-white-light">
                 Client Dashboard
               </h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                Hi John!
-              </p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Hi!</p>
             </div>
           </div>
 
-          {/* Right Section: Search, Theme Toggle, and User Profile */}
+          {/* Right Section: Global Filter, Theme Toggle, and User Profile */}
           <div className="sm:flex-1 ltr:sm:ml-0 ltr:ml-auto sm:rtl:mr-0 rtl:mr-auto flex items-center space-x-1.5 lg:space-x-2 rtl:space-x-reverse dark:text-[#d0d2d6] justify-end">
+            {/* Mobile Filter Button - Visible only on mobile */}
+            <div className="md:hidden">
+              <div className="dropdown shrink-0">
+                <GlobalFilterWidget showCreateGroup={true} compact={true} />
+              </div>
+            </div>
+
+            {/* Desktop Global Filter Widget - Hidden on mobile */}
+            <div className="hidden md:block">
+              <GlobalFilterWidget showCreateGroup={true} />
+            </div>
+
+            {/* Theme Toggle */}
             <div>
               {themeConfig.theme === "light" ? (
                 <button
@@ -144,6 +156,8 @@ const Header = () => {
                 </button>
               )}
             </div>
+
+            {/* User Profile Dropdown */}
             <div className="dropdown shrink-0 flex">
               <Dropdown
                 offset={[0, 8]}
@@ -165,12 +179,7 @@ const Header = () => {
                         alt="userProfile"
                       />
                       <div className="ltr:pl-4 rtl:pr-4 truncate">
-                        <h4 className="text-base">
-                          John Doe
-                          {/* <span className="text-xs bg-success-light rounded text-success px-1 ltr:ml-2 rtl:ml-2">
-                            Pro
-                          </span> */}
-                        </h4>
+                        <h4 className="text-base">John Doe</h4>
                         <button
                           type="button"
                           className="text-black/60 hover:text-primary dark:text-dark-light/60 dark:hover:text-white"
@@ -180,6 +189,7 @@ const Header = () => {
                       </div>
                     </div>
                   </li>
+
                   <li>
                     <Link to="/users/profile" className="dark:hover:text-white">
                       <IconUser className="w-4.5 h-4.5 ltr:mr-2 rtl:ml-2 shrink-0" />

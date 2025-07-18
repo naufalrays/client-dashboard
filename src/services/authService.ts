@@ -2,7 +2,7 @@ import Cookies from 'js-cookie';
 import axiosInstance from '../lib/axios';
 import type { AuthResponse, LoginRequest } from '../types/auth';
 
-const COOKIE_NAME = 'auth_token';
+const COOKIE_NAME = 'accessToken';
 
 export const authService = {
     // Login function
@@ -20,7 +20,6 @@ export const authService = {
             Cookies.set(COOKIE_NAME, accessToken, {
                 expires: 7, // 7 hari
                 // secure: process.env.NODE_ENV === 'production', // HTTPS only di production
-                sameSite: 'strict',
                 path: '/',
             });
 

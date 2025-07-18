@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-const BASE_URL = 'https://staging.japi.ai/v1/api';
+const BASE_URL = 'https://google-staging.japi.ai/v1/api';
 
 const axiosInstance = axios.create({
     baseURL: BASE_URL,
@@ -15,7 +15,7 @@ const axiosInstance = axios.create({
 // Request interceptor - menambahkan token ke setiap request
 axiosInstance.interceptors.request.use(
     (config) => {
-        const token = Cookies.get('auth_token');
+        const token = Cookies.get('accessToken');
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
@@ -32,7 +32,7 @@ axiosInstance.interceptors.response.use(
     (error) => {
         if (error.response?.status === 401) {
             // Token expired atau invalid, logout user
-            Cookies.remove('auth_token');
+            Cookies.remove('accessToken');
             window.location.href = '/login';
         }
         return Promise.reject(error);

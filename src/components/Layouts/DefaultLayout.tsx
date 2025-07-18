@@ -10,6 +10,8 @@ import Sidebar from "./Sidebar";
 import type { IRootState } from "../../store";
 import Header from "./Header";
 // import Portals from "../../components/Portals";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const DefaultLayout = ({ children }: PropsWithChildren) => {
   const themeConfig = useSelector((state: IRootState) => state.themeConfig);
@@ -148,6 +150,21 @@ const DefaultLayout = ({ children }: PropsWithChildren) => {
           </div>
         </div>
       </div>
+      {/* Toast Container - positioned at layout level */}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        style={{ zIndex: 99999 }}
+        className="toast-container"
+      />
     </App>
   );
 };

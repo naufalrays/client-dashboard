@@ -22,6 +22,7 @@ export interface RecentActivityItem {
     activity: string;
     timestamp: string;
     relativeTime: string;
+    type: string;
 }
 
 export interface RecentActivityResponse {
@@ -49,7 +50,6 @@ export interface TopPerformersResponse {
     data: TopPerformerItem[];
 }
 
-
 export interface ProgressChartItem {
     week: string;
     averageProgress: number;
@@ -61,26 +61,122 @@ export interface ProgressChartResponse {
     data: ProgressChartItem[];
 }
 
-export const dashboardService = {
-    getOverview: async (): Promise<DashboardOverviewResponse> => {
-        const response = await axiosInstance.get<DashboardOverviewResponse>('/client-dashboard/overview');
-        return response.data;
-    },
+// Filter parameter interfaces
+export interface DashboardFilterParams {
+    groupIds?: string[];
+    startDate?: string;
+    endDate?: string;
+}
 
-    getRecentActivity: async (page: number = 1, limit: number = 10): Promise<RecentActivityResponse> => {
-        const response = await axiosInstance.get<RecentActivityResponse>('/client-dashboard/recent-activity', {
-            params: { page }
+export interface RecentActivityParams {
+    page?: number;
+    limit?: number;
+    groupIds?: number[];
+    startDate?: string;
+    endDate?: string;
+}
+
+export interface TopPerformersParams extends DashboardFilterParams {
+    // No additional params needed for now
+}
+
+export interface ProgressChartParams extends DashboardFilterParams {
+    // No additional params needed for now
+}
+
+export const dashboardService = {
+    getOverview: async (params: DashboardFilterParams = {}): Promise<DashboardOverviewResponse> => {
+        const queryParams = new URLSearchParams();
+
+        if (params.groupIds && params.groupIds.length > 0) {
+            params.groupIds.forEach(groupId => {
+                queryParams.append('groupIds', groupId);
+            });
+        }
+        if (params.startDate) {
+            queryParams.append('startDate', params.startDate);
+        }
+        if (params.endDate) {
+            queryParams.append('endDate', params.endDate);
+        }
+
+        const response = await axiosInstance.get<DashboardOverviewResponse>('/client-dashboard/overview', {
+            params: queryParams
         });
         return response.data;
     },
 
-    getTopPerformers: async (): Promise<TopPerformersResponse> => {
-        const response = await axiosInstance.get<TopPerformersResponse>('/client-dashboard/top-performers');
+    getRecentActivity: async (params: RecentActivityParams = {}): Promise<RecentActivityResponse> => {
+        const queryParams = new URLSearchParams();
+        
+        if (params.page) {
+          queryParams.append('page', params.page.toString());
+        }
+        
+        if (params.limit) {
+          queryParams.append('limit', params.limit.toString());
+        }
+        
+        if (params.groupIds && params.groupIds.length > 0) {
+          params.groupIds.forEach(id => {
+            queryParams.append('groupIds[]', id.toString());
+          });
+        }
+        
+        if (params.startDate) {
+          queryParams.append('startDate', params.startDate);
+        }
+        
+        if (params.endDate) {
+          queryParams.append('endDate', params.endDate);
+        }
+
+        const response = await axiosInstance.get<RecentActivityResponse>(
+          `/client-dashboard/recent-activity?${queryParams}`
+        );
+        
         return response.data;
     },
 
-    getProgressChart: async (): Promise<ProgressChartResponse> => {
-        const response = await axiosInstance.get<ProgressChartResponse>('/client-dashboard/progress-chart');
+    getTopPerformers: async (params: TopPerformersParams = {}): Promise<TopPerformersResponse> => {
+        const queryParams = new URLSearchParams();
+
+        if (params.groupIds && params.groupIds.length > 0) {
+            params.groupIds.forEach(groupId => {
+                queryParams.append('groupIds', groupId);
+            });
+        }
+        if (params.startDate) {
+            queryParams.append('startDate', params.startDate);
+        }
+        if (params.endDate) {
+            queryParams.append('endDate', params.endDate);
+        }
+
+        const response = await axiosInstance.get<TopPerformersResponse>('/client-dashboard/top-performers', {
+            params: queryParams
+        });
+        return response.data;
+    },
+
+    getProgressChart: async (params: ProgressChartParams = {}): Promise<ProgressChartResponse> => {
+        const queryParams = new URLSearchParams();
+
+        if (params.groupIds && params.groupIds.length > 0) {
+            params.groupIds.forEach(groupId => {
+                queryParams.append('groupIds', groupId);
+            });
+        }
+        if (params.startDate) {
+            queryParams.append('startDate', params.startDate);
+        }
+        if (params.endDate) {
+            queryParams.append('endDate', params.endDate);
+        }
+
+        const response = await axiosInstance.get<ProgressChartResponse>('/client-dashboard/progress-chart', {
+            params: queryParams
+        });
         return response.data;
     },
 };

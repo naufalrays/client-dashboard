@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Lock, Mail, Eye, EyeOff } from "lucide-react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
@@ -45,7 +44,6 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-blue-50">
-      <ToastContainer />
       {/* Container untuk membatasi lebar maksimum */}
       <div className="max-w-[1440px] w-full mx-auto flex flex-col md:flex-row">
         {/* Left Side - Welcome Text */}
